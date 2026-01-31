@@ -49,11 +49,10 @@ const userSchema = new Schema({
 },{timestamps: true})
 
 // this code runs before saving the user into db, it's a mongoose middleware
-userSchema.pre("save", async function (next) {
-    if(!this.isModified("password")) return next();
+userSchema.pre("save", async function () {
+    if(!this.isModified("password")) return;
 
     this.password = await bcrypt.hash(this.password, 10)
-    next()
 })
 // method to compare password, used during login to verify password correctness 
 userSchema.methods.isPasswordCorrect = async function (password) {
